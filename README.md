@@ -25,7 +25,7 @@ For your server to send a message to one or more devices, you must first initial
 
 
 ```crystal
-require 'gcm'
+require "gcm"
 
 gcm = GCM.new("my_api_key")
 
