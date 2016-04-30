@@ -12,7 +12,7 @@ Add this to your application's `shard.yml`:
 ```yaml
 dependencies:
   gcm:
-    github: kuende/gcm
+    github: kuende/gcm-crystal
 ```
 
 ## Requirements
