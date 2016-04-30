@@ -45,7 +45,7 @@ class GCM
       "Content-Type" => "application/json"
     }
 
-    response = api_execute("POST", "/send", options.to_json, headers)
+    response = api_execute("POST", "/send", json, headers)
     build_response(response, registration_ids)
   end
 
