@@ -33,9 +33,9 @@ registration_ids= ["12", "13"] # an array of one or more client registration tok
 options = {
   "data": {
     "score": "123"
-  } of String => JSON::Type,
+  },
   "collapse_key": "updated_score"
-} of String => JSON::Type
+}
 response = gcm.send(registration_ids, options)
 
 Response is an object containing body, headers, status and canonical_ids/not_registered_ids. Check [here](https://developers.google.com/cloud-messaging/http#response) to see how to interpret the responses.
