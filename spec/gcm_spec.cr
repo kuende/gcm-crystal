@@ -77,7 +77,7 @@ Spec2.describe GCM do
       response.canonical_ids = [] of GCM::CanonicalID
       response.not_registered_ids = [] of String
       response.response = "success"
-      expect(gcm.send(registration_ids, {} of String => JSON::Type)).to eq(response)
+      expect(gcm.send(registration_ids)).to eq(response)
       expect(stub_gcm_send_request.calls).to eq(1)
     end
 
@@ -94,12 +94,7 @@ Spec2.describe GCM do
       response.not_registered_ids = [] of String
       response.response = "success"
 
-      options = {
-        "data": {
-          "a": "b"
-        } of String => JSON::Type
-      } of String => JSON::Type
-      expect(gcm.send(registration_ids, {} of String => JSON::Type)).to eq(response)
+      expect(gcm.send(registration_ids)).to eq(response)
       expect(stub_gcm_send_request_with_basic_auth.calls).to eq(1)
     end
 
@@ -118,9 +113,9 @@ Spec2.describe GCM do
         options = {
           "data": {
             "score": "5x1",
-            "time": "15:10"
-          } of String => JSON::Type
-        } of String => JSON::Type
+            "time":  "15:10",
+          },
+        }
 
         gcm.send(registration_ids, options)
 

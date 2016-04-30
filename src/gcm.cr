@@ -1,3 +1,4 @@
+require "http/client"
 require "json"
 require "./gcm/*"
 
@@ -29,9 +30,15 @@ class GCM
   # gcm.send(["4sdsx", "8sdsd"], {data: {score: "5x1"}})
 
   # def send(registration_ids : Array(String), options : Options)
-  def send(registration_ids : Array(String), options : Hash(String, JSON::Type))
-    # Workaround for https://github.com/crystal-lang/crystal/issues/2532
-    options["registration_ids"] = JSON.parse(registration_ids.to_json).as_a
+  def send(registration_ids : Array(String), options : Hash? = nil)
+    json = String.build do |io|
+      io.json_object do |obj|
+        options.try &.each do |key, value|
+          obj.field key, value
+        end
+        obj.field "registration_ids", registration_ids
+      end
+    end
 
     headers = HTTP::Headers{
       "Authorization" => "key=#{@api_key}",
@@ -40,10 +47,6 @@ class GCM
 
     response = api_execute("POST", "/send", options.to_json, headers)
     build_response(response, registration_ids)
-  end
-
-  def send(registration_ids : Array(String))
-    send(registration_ids, {} of String => JSON::Type)
   end
 
   def api_execute(method : String, path : String, body : String, headers : HTTP::Headers) : HTTP::Client::Response
