@@ -40,6 +40,14 @@ class GCM
       self.canonical_ids == other.canonical_ids &&
       self.not_registered_ids == other.not_registered_ids
     end
+
+    def body_as_json
+      if self.body == ""
+        "{}"
+      else
+        self.body
+      end
+    end
   end
 
   class CanonicalID

@@ -42,6 +42,10 @@ class GCM
     build_response(response, registration_ids)
   end
 
+  def send(registration_ids : Array(String))
+    send(registration_ids, {} of String => JSON::Type)
+  end
+
   def api_execute(method : String, path : String, body : String, headers : HTTP::Headers) : HTTP::Client::Response
     HTTP::Client.exec(method, BASE_URI + path, body: body, headers: headers)
   end
@@ -52,7 +56,7 @@ class GCM
     case
     when response.status_code == 200
       response.response = "success"
-      body = SendResponse.from_json(response.body)
+      body = SendResponse.from_json(response.body_as_json)
       response.canonical_ids = build_canonical_ids(body, registration_ids) unless registration_ids.empty?
       response.not_registered_ids = build_not_registered_ids(body, registration_ids) unless registration_ids.empty?
     when response.status_code == 400
