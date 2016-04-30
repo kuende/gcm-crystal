@@ -1,29 +1,5 @@
 require "./spec_helper"
 
-class WebMock::Stub
-  @calls = 0
-  @id = ""
-
-  def initialize(@method : Symbol, uri)
-    @uri = parse_uri(uri)
-
-    # For to_return
-    @status = 200
-    @body = ""
-    @headers = HTTP::Headers{"Content-length": "0"}
-    @calls = 0
-  end
-
-  def exec
-    @calls += 1
-    HTTP::Client::Response.new(@status, body: @body, headers: @headers)
-  end
-
-  def calls
-    @calls
-  end
-end
-
 Spec2.describe GCM do
   let(:send_url) { "#{GCM::BASE_URI}/send" }
 
