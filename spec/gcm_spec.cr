@@ -211,5 +211,80 @@ Spec2.describe GCM do
         end
       end
     end
+
+    describe "when send_notification responds canonical_ids" do
+      let(:mock_request_attributes) do
+        {
+          body: valid_request_body.to_json,
+          headers: valid_request_headers
+        }
+      end
+
+      let(:valid_response_body_with_canonical_ids) do
+        {
+          failure: 0,
+          canonical_ids: 1,
+          results: [
+            { registration_id: "43", message_id: "0:1385025861956342%572c22801bb3"}
+          ]
+        }
+      end
+
+      subject { GCM.new(api_key) }
+      before do
+        WebMock.stub(:post, send_url).with(
+          body: valid_request_body.to_json,
+          headers: valid_request_headers
+        ).to_return(
+          # ref: http://developer.android.com/guide/google/gcm/gcm.html#success
+          body: valid_response_body_with_canonical_ids.to_json,
+          headers: HTTP::Headers.new,
+          status: 200
+        )
+      end
+
+      it "should contain canonical_ids" do
+        body = %({"failure":0,"canonical_ids":1,"results":[{"registration_id":"43","message_id":"0:1385025861956342%572c22801bb3"}]})
+        response = GCM::Response.new(body, HTTP::Headers{"Content-length" => "115"}, 200)
+        response.response = "success"
+        response.canonical_ids = [GCM::CanonicalID.new("43", "42")]
+
+        expect(subject.send(registration_ids)).to eq(response)
+      end
+    end
+
+    describe "when send_notification responds with NotRegistered" do
+      subject { GCM.new(api_key) }
+
+      let(:valid_response_body_with_not_registered_ids) do
+        {
+          canonical_ids: 0,
+          failure: 1,
+          results: [
+            { error: "NotRegistered" }
+          ]
+        }
+      end
+
+      before do
+        WebMock.stub(:post, send_url).with(
+          body: valid_request_body.to_json,
+          headers: valid_request_headers
+        ).to_return(
+          body: valid_response_body_with_not_registered_ids.to_json,
+          headers: HTTP::Headers.new,
+          status: 200
+        )
+      end
+
+      it "should contain not_registered_ids" do
+        body = %({"canonical_ids":0,"failure":1,"results":[{"error":"NotRegistered"}]})
+        response = GCM::Response.new(body, HTTP::Headers{"Content-length" => "69"}, 200)
+        response.response = "success"
+        response.not_registered_ids = registration_ids
+
+        expect(subject.send(registration_ids)).to eq(response)
+      end
+    end
   end
 end

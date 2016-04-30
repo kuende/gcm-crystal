@@ -9,9 +9,9 @@ class GCM
 
   class Result
     JSON.mapping({
-      registration_id: String,
-      message_id: String,
-      error: String
+      registration_id: {type: String, default: ""},
+      message_id: {type: String, default: ""},
+      error: {type: String, default: ""}
     })
   end
 
@@ -57,6 +57,11 @@ class GCM
     def initialize(new_id : String, old_id : String)
       @new_id = new_id
       @old_id = old_id
+    end
+
+    def ==(other : CanonicalID)
+      self.new_id == other.new_id &&
+      self.old_id == other.old_id
     end
   end
 end
