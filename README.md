@@ -37,9 +37,10 @@ options = {
   "collapse_key": "updated_score"
 }
 response = gcm.send(registration_ids, options)
+```
 
 Response is an object containing body, headers, status and canonical_ids/not_registered_ids. Check [here](https://developers.google.com/cloud-messaging/http#response) to see how to interpret the responses.
-```
+
 ## Contributing
 
 1. Fork it ( https://github.com/kuende/gcm-crystal/fork )
