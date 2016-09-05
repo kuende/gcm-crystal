@@ -9,7 +9,7 @@ license: Apache 2
 development_dependencies:
   spec2:
     github: waterlink/spec2.cr
-    version: ~> 0.8
+    branch: master
   webmock:
     github: manastech/webmock.cr
     branch: master

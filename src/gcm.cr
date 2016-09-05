@@ -27,7 +27,7 @@ class GCM
   #   }
   # }
   # gcm = GCM.new("API_KEY")
-  # gcm.send(["4sdsx", "8sdsd"], {data: {score: "5x1"}})
+  # gcm.send(["4sdsx", "8sdsd"], {:data => {:score => "5x1"}})
 
   # def send(registration_ids : Array(String), options : Options)
   def send(registration_ids : Array(String), options : Hash? = nil)

@@ -16,8 +16,8 @@ Spec2.describe GCM do
 
     let(:valid_request_headers) do
       HTTP::Headers{
-        "Content-Type": "application/json",
-        "Authorization": "key=#{api_key}"
+        "Content-Type" => "application/json",
+        "Authorization" => "key=#{api_key}"
       }
     end
 
@@ -87,9 +87,9 @@ Spec2.describe GCM do
 
         gcm = GCM.new(api_key)
         options = {
-          "data": {
-            "score": "5x1",
-            "time":  "15:10",
+          "data" => {
+            "score" => "5x1",
+            "time" => "15:10",
           },
         }
 
@@ -186,17 +186,17 @@ Spec2.describe GCM do
     describe "when send_notification responds canonical_ids" do
       let(:mock_request_attributes) do
         {
-          body: valid_request_body.to_json,
-          headers: valid_request_headers
+          :body => valid_request_body.to_json,
+          :headers => valid_request_headers
         }
       end
 
       let(:valid_response_body_with_canonical_ids) do
         {
-          failure: 0,
-          canonical_ids: 1,
-          results: [
-            { registration_id: "43", message_id: "0:1385025861956342%572c22801bb3"}
+          :failure => 0,
+          :canonical_ids => 1,
+          :results => [
+            { :registration_id => "43", :message_id => "0:1385025861956342%572c22801bb3"}
           ]
         }
       end
@@ -229,10 +229,10 @@ Spec2.describe GCM do
 
       let(:valid_response_body_with_not_registered_ids) do
         {
-          canonical_ids: 0,
-          failure: 1,
-          results: [
-            { error: "NotRegistered" }
+          :canonical_ids => 0,
+          :failure => 1,
+          :results => [
+            { :error => "NotRegistered" }
           ]
         }
       end
